@@ -1,0 +1,70 @@
+
+/* Overall page styling */
+body {
+    background-color: #e9ecef;
+    color: #212529;
+    font-family: 'Roboto', sans-serif;
+}
+.stApp {
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Header styling */
+h1 {
+    color: #007bff;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 40px;
+}
+h2 {
+    color: #495057;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Button styling */
+.stButton button {
+    background-color: #007bff !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+    padding: 12px 24px !important;
+    font-size: 16px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+    transition: all 0.3s ease;
+}
+.stButton button:hover {
+    background-color: #0056b3 !important;
+    box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Input and Selectbox styling */
+.stTextInput input, .stSelectbox select, .stTagsInput input {
+    border-radius: 10px !important;
+    border: 1px solid #ced4da !important;
+    padding: 12px !important;
+    transition: all 0.3s ease;
+}
+.stTextInput input:focus, .stSelectbox select:focus, .stTagsInput input:focus {
+    border-color: #007bff !important;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+}
+
+/* Section dividers */
+.stMarkdown {
+    margin-top: 40px !important;
+    border-top: 2px solid #dee2e6 !important;
+    padding-top: 20px !important;
+}
+
+/* Column styling */
+.css-1fcbx8f {  /* Custom class for column alignment */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
