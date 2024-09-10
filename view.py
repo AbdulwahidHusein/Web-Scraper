@@ -13,16 +13,22 @@ form_data = model.FormData(model="", fields=[], url="", query="")
 with open("styles.css", "r") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-st.title("Before we go tell me some stuff")
+st.title("Adjsut some Parameters!")
 
 # Divide the page into two columns, aligned symmetrically
 col1, col2 = st.columns(2, gap="large")
 
 with col1:
     st.header("Model Selection")
-    form_data.model = st.selectbox(
+    llm = st.selectbox(
         "Select AI model",
-        options=["gpt-4o-mini", "gpt-4o-2024-08-06"],
+        options=["OpenAI", "Gemini", "Groq (llama 3.1)"],
+        index=0,
+        help="Choose a language model."
+    )
+    form_data.model = st.selectbox(
+        "Select " + llm + " model",
+        options=["gpt-4o-mini", "gpt-3.5-turbo", "gpt-4o-2024-08-06"],
         index=0,
         help="Choose the AI model you want to use for scraping."
     )
@@ -56,7 +62,6 @@ if st.button("Start Scraping", help="Click to start the scraping process."):
     with st.spinner('Please wait... Data is being scraped.'):
         try:
             st.session_state['results'] = app.scrape.perform_scrape(form_data)
-            print(st.session_state['results'])
             st.session_state['perform_scrape'] = True
         except Exception as e:
             st.session_state["perform_scrape"] = False
@@ -64,9 +69,17 @@ if st.button("Start Scraping", help="Click to start the scraping process."):
 if st.session_state.get('perform_scrape'):
     result = st.session_state['results']
 
-    # Display the DataFrame and other data
-    st.write("Scraped Data:", result.df)
-    
+    # Add padding and center the results
+    st.markdown("<h3 style='text-align: center;'>Scraped Data</h3>", unsafe_allow_html=True)
+
+    # Use Streamlit's styling options to make the DataFrame look nicer
+    styled_df = result.df.style.set_table_styles([
+        {'selector': 'th', 'props': [('font-size', '14px'), ('text-align', 'center')]},
+        {'selector': 'td', 'props': [('padding', '8px'), ('border', '1px solid #ddd'), ('text-align', 'center')]}
+    ]).set_properties(**{'background-color': '#f4f4f4', 'border-color': 'black', 'color': 'black', 'border-style': 'solid'})
+
+    st.dataframe(styled_df)
+
     # Create columns for download buttons
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -78,13 +91,8 @@ if st.session_state.get('perform_scrape'):
         # Convert DataFrame to CSV
         csv_data = result.df.to_csv(index=False)
         st.download_button("Download CSV", data=csv_data, file_name=f"{result.timestamp}_data.csv")
-    
-    # with col3:
-    #     # Convert DataFrame to XLSX
-    #     xlsx_data = result.df.to_excel(index=False, engine='openpyxl')
-    #     st.download_button("Download XLSX", data=xlsx_data, file_name=f"{result.timestamp}_data.xlsx")
 
-    # Optional: Download Markdown if needed
+    # Optionally: Download Markdown if needed
     if result.markdown:
         st.download_button("Download Markdown", data=result.markdown, file_name=f"{result.timestamp}_data.md")
 

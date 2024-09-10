@@ -2,6 +2,7 @@ import pandas as pd
 from typing import Type
 from pydantic import BaseModel, create_model
 from typing import List, Optional
+from selenium.webdriver.remote.webdriver import WebDriver
 
 
 
@@ -22,8 +23,16 @@ class FinalResult(BaseModel):
     
     class Config:
         arbitrary_types_allowed = True
-    
-    
+
+class PageStats(BaseModel):
+    html : str
+    forms : list
+    next_buttons : list
+    prev_buttons: list
+    cleaned_html : Optional[str] = None
+    driver : Optional[WebDriver] = None
+    class Config:
+        arbitrary_types_allowed = True
 def create_dynamic_listing_model(field_names: List[str]) -> Type[BaseModel]:
     """
     Dynamically creates a Pydantic model based on provided fields.
