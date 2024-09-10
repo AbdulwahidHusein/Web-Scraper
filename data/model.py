@@ -7,10 +7,15 @@ from selenium.webdriver.remote.webdriver import WebDriver
 
 
 class FormData(BaseModel):
+    llm : Optional[str] = None
     model : str
     fields: list
     url: str
     query: str
+    login_email: Optional[str] = None
+    login_password: Optional[str] = None
+    class Config:
+        arbitrary_types_allowed = True
     
     
 class FinalResult(BaseModel):

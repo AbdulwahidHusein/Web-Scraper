@@ -13,21 +13,21 @@ form_data = model.FormData(model="", fields=[], url="", query="")
 with open("styles.css", "r") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-st.title("Adjsut some Parameters!")
+st.title("Settings")
 
 # Divide the page into two columns, aligned symmetrically
 col1, col2 = st.columns(2, gap="large")
 
 with col1:
     st.header("Model Selection")
-    llm = st.selectbox(
+    form_data.llm = st.selectbox(
         "Select AI model",
         options=["OpenAI", "Gemini", "Groq (llama 3.1)"],
         index=0,
         help="Choose a language model."
     )
     form_data.model = st.selectbox(
-        "Select " + llm + " model",
+        "Select " + form_data.llm + " model",
         options=["gpt-4o-mini", "gpt-3.5-turbo", "gpt-4o-2024-08-06"],
         index=0,
         help="Choose the AI model you want to use for scraping."
@@ -54,6 +54,11 @@ with col2:
     further_prompt = st.text_input("Is there additional things I should consider?")
     form_data.query = further_prompt
 
+with col2:
+    st.markdown("<h5 style='text-align: center;'>If the site requires login, please Enter valid Credential</h5>", unsafe_allow_html=True)
+    form_data.login_email = st.text_input("Email or Username")
+    form_data.login_password = st.text_input("Password", type="password")
+
 # Logic here
 if 'perform_scrape' not in st.session_state:
     st.session_state['perform_scrape'] = False
@@ -77,8 +82,7 @@ if st.session_state.get('perform_scrape'):
         {'selector': 'th', 'props': [('font-size', '14px'), ('text-align', 'center')]},
         {'selector': 'td', 'props': [('padding', '8px'), ('border', '1px solid #ddd'), ('text-align', 'center')]}
     ]).set_properties(**{'background-color': '#f4f4f4', 'border-color': 'black', 'color': 'black', 'border-style': 'solid'})
-
-    st.dataframe(styled_df)
+    
 
     # Create columns for download buttons
     col1, col2, col3 = st.columns(3)
@@ -86,14 +90,16 @@ if st.session_state.get('perform_scrape'):
         # Convert DataFrame to JSON
         json_data = result.df.to_json(orient='records', lines=True)
         st.download_button("Download JSON", data=json_data, file_name=f"{result.timestamp}_data.json")
-    
+    with col2:
+        st.dataframe(styled_df)
     with col2:
         # Convert DataFrame to CSV
         csv_data = result.df.to_csv(index=False)
         st.download_button("Download CSV", data=csv_data, file_name=f"{result.timestamp}_data.csv")
 
     # Optionally: Download Markdown if needed
-    if result.markdown:
-        st.download_button("Download Markdown", data=result.markdown, file_name=f"{result.timestamp}_data.md")
+    with col3:
+        if result.markdown:
+            st.download_button("Download Markdown", data=result.markdown, file_name=f"{result.timestamp}_data.md")
 
 st.markdown("<p style='text-align: center; font-size: 14px;'>© 2024 AI Scraper. All rights reserved.</p>", unsafe_allow_html=True)
