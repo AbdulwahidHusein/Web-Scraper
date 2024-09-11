@@ -19,6 +19,7 @@ def setup(DynamicListingsContainer, form_datal: model.FormData):
     global driver, container, page_stats, form_data
     container = DynamicListingsContainer
     form_data = form_datal
+    driver = setup_selenium.setup()
     try:
         driver.get(form_data.url)
         page_stats = get_pagestats.page_stats(driver)
@@ -30,7 +31,7 @@ def setup(DynamicListingsContainer, form_datal: model.FormData):
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
-global dynamic_container
+dynamic_container = None
 
 @tool
 def add_data(html_content) -> str:
@@ -148,7 +149,7 @@ def perform_agent_scrapping():
 
 
 if __name__ == "__main__":
-    form_data = model.FormData(model="gpt-4o-mini", fields=["name", "price"], url="https://scrapeme.live/shop/page/2/", query="")
+    form_data = model.FormData(model="gpt-4o-mini", fields=["name", "price"], url="http://books.toscrape.com/", query="")
     
     DynamicListingModel = model.create_dynamic_listing_model(form_data.fields)
     DynamicListingsContainer = model.create_listings_container_model(DynamicListingModel)

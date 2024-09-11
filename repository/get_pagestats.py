@@ -73,8 +73,6 @@ def detect_pagination_elements(driver):
                 pagination_elements.append({
                     'xpath': get_xpath_of_element(driver, element),
                     'text': element.text,
-                    'href': element_href if element_href else None,  # Include href if it's a link
-                    'class': element_class
                 })
         
         return pagination_elements
