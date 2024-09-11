@@ -21,3 +21,6 @@ def setup():
     # Initialize the WebDriver
     driver = webdriver.Chrome(service=service, options=options)
     return driver
+
+
+#https://www.imdb.com/chart/top/

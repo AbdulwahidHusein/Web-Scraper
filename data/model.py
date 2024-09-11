@@ -5,7 +5,6 @@ from typing import List, Optional
 from selenium.webdriver.remote.webdriver import WebDriver
 
 
-
 class FormData(BaseModel):
     llm : Optional[str] = None
     model : str
@@ -32,8 +31,7 @@ class FinalResult(BaseModel):
 class PageStats(BaseModel):
     html : str
     forms : list
-    next_buttons : list
-    prev_buttons: list
+    buttons_and_links: list
     cleaned_html : Optional[str] = None
     driver : Optional[WebDriver] = None
     class Config:
